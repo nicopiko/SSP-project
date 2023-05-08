@@ -1,9 +1,12 @@
 import time as t
-import random
 import os
 
-alcoholArray = ["alcohol1", "alcohol2", "alcohol3", "alcohol4", "alcohol5", "alcohol6", "alcohol7", "alcohol8"]
-mixerArray = ["mixer1", "mixer2", "mixer3", "mixer4", "mixer5", "mixer6", "mixer7", "mixer8"]
+alcoholNum = ["1: ", "2: ", "3: ", "4: ", "5: ", "6: ", "7: ", "8: "]
+alcoholArray = ["Rum", "Tequila", "Coconut Rum", "Vodka", "Gin", "Whiskey", "Licor 43", "Jägermeister"]
+alcoholOptions = [alcoholNum[0] + alcoholArray[0], alcoholNum[1] + alcoholArray[1], alcoholNum[2] + alcoholArray[2], alcoholNum[3] + alcoholArray[3], alcoholNum[4] + alcoholArray[4], alcoholNum[5] + alcoholArray[5], alcoholNum[6] + alcoholArray[6], alcoholNum[7] + alcoholArray[7]]
+mixerNum = ["1: ", "2: ", "3: ", "4: ", "5: ", "6: ", "7: ", "8: "]
+mixerArray = ["Lemon soda", "Apple Juice", "Orange Juice", "Chocolate Milk", "Orange Soda", "Cola", "Sparkling Water", "Tonic"]
+mixerOptions = [mixerNum[0] + mixerArray[0], mixerNum[1] + mixerArray[1], mixerNum[2] + mixerArray[2], mixerNum[3] + mixerArray[3], mixerNum[4] + mixerArray[4], mixerNum[5] + mixerArray[5], mixerNum[6] + mixerArray[6], mixerNum[7] + mixerArray[7]]
 
 class Mixie():
     def __init__(self):
@@ -15,13 +18,13 @@ class Mixie():
         self.iceParameter = False
 
     def changeAlcohol(self):
-        alcohol = input("What alcohol do you want? 1-8 ")
+        alcohol = input(f"What alcohol do you want? Your options are: {alcoholOptions} ")
         amountAlcohol = input("How much of this alcohol do you want? ")
         self.alcoholParameter = int(alcohol) - 1
         self.alcoholVolume = int(amountAlcohol)
 
     def changeMixer(self):
-        mixer = input("What mixer do you want? ")
+        mixer = input(f"What mixer do you want? Your options are: {mixerOptions}")
         amountMixer = input("How much of this mixer do you want? ")
         self.mixerParameter = int(mixer) - 1
         self.mixerVolume = int(amountMixer)
@@ -69,11 +72,11 @@ class AlcoholWheel(Mixie):
     def __closeValve__(self):
         print("Valve is closed")
 
-    def __readFlowSensor__(self):
-        return random.randint(0,5)
+    def __readFlowSensor__(self,amount):
+        t.sleep(amount)
 
     def turnWheel(self):
-        print(f"Current alcohol: {alcoholArray[self.currentAlcohol]}")
+        print("The wheel is turning...")
         t.sleep(1)
         if self.currentAlcohol < 7:
             self.currentAlcohol = self.currentAlcohol + 1
@@ -81,17 +84,15 @@ class AlcoholWheel(Mixie):
             self.currentAlcohol = 0
 
     def dispense(self, alcohol, amount):
-        while self.currentAlcohol != alcohol + 1:
+        while self.currentAlcohol != alcohol:
+            print(f"Current alcohol: {alcoholArray[self.currentAlcohol]}")
+            t.sleep(1)
             self.turnWheel()
-            if self.currentAlcohol <= alcohol:
-                print("The wheel is turning...")
-                t.sleep(1)
             os.system('cls')
-
+        print(f"Current alcohol: {alcoholArray[self.currentAlcohol]}")
+        t.sleep(1)
         self.__openValve__()
-        while self.__readFlowSensor__() < amount:
-            t.sleep(0.5)
-        t.sleep(0.5)
+        self.__readFlowSensor__(amount)
         self.__closeValve__()
         t.sleep(1)
 
@@ -106,11 +107,11 @@ class MixerWheel(Mixie):
     def __closeValve__(self):
         print("Valve is closed")
 
-    def __readFlowSensor__(self):
-        return random.randint(0, 5)
+    def __readFlowSensor__(self,amount):
+        t.sleep(amount)
 
     def turnWheel(self):
-        print(f"Current mixer: {mixerArray[self.currentMixer]}")
+        print("Wheel is turning...")
         t.sleep(1)
         if self.currentMixer < 7:
             self.currentMixer = self.currentMixer + 1
@@ -118,17 +119,15 @@ class MixerWheel(Mixie):
             self.currentMixer = 0
 
     def dispense(self, mixer, amount):
-        while self.currentMixer != mixer + 1:
+        while self.currentMixer != mixer:
+            print(f"Current mixer: {mixerArray[self.currentMixer]}")
+            t.sleep(1)
             self.turnWheel()
-            if self.currentMixer <= mixer:
-                print("Wheel is turning...")
-                t.sleep(1)
             os.system('cls')
-
+        print(f"Current mixer: {mixerArray[self.currentMixer]}")
+        t.sleep(1)
         self.__openValve__()
-        while self.__readFlowSensor__() < amount:
-            t.sleep(0.5)
-        t.sleep(0.5)
+        self.__readFlowSensor__(amount)
         self.__closeValve__()
         t.sleep(1)
 
@@ -200,18 +199,18 @@ os.system('cls')
 print("Current drink parameters:")
 if Mixie.getIceParameter():
     if Mixie.getMixType() == 1:
-        print(f"{Mixie.getAlcohol()[1]} ml of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} ml of {mixerArray[Mixie.getMixer()[0]]} shaken with ice. Sounds delicious, coming right up! :3")
+        print(f"{Mixie.getAlcohol()[1]} cl of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} cl of {mixerArray[Mixie.getMixer()[0]]} shaken with ice. Sounds delicious, coming right up! :3")
     elif Mixie.getMixType() == 2:
-        print(f"{Mixie.getAlcohol()[1]} ml of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} ml of {mixerArray[Mixie.getMixer()[0]]} stirred with ice. Sounds delicious, coming right up! :3")
+        print(f"{Mixie.getAlcohol()[1]} cl of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} cl of {mixerArray[Mixie.getMixer()[0]]} stirred with ice. Sounds delicious, coming right up! :3")
     else:
-        print(f"{Mixie.getAlcohol()[1]} ml of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} ml of {mixerArray[Mixie.getMixer()[0]]} with ice. Sounds delicious, coming right up! :3")
+        print(f"{Mixie.getAlcohol()[1]} cl of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} cl of {mixerArray[Mixie.getMixer()[0]]} with ice. Sounds delicious, coming right up! :3")
 else:
     if Mixie.getMixType() == 1:
-        print(f"{Mixie.getAlcohol()[1]} ml of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} ml of {mixerArray[Mixie.getMixer()[0]]} shaken. Sounds delicious, coming right up! :3")
+        print(f"{Mixie.getAlcohol()[1]} cl of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} cl of {mixerArray[Mixie.getMixer()[0]]} shaken. Sounds delicious, coming right up! :3")
     elif Mixie.getMixType() == 2:
-        print(f"{Mixie.getAlcohol()[1]} ml of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} ml of {mixerArray[Mixie.getMixer()[0]]} stirred. Sounds delicious, coming right up! :3")
+        print(f"{Mixie.getAlcohol()[1]} cl of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} cl of {mixerArray[Mixie.getMixer()[0]]} stirred. Sounds delicious, coming right up! :3")
     else:
-        print(f"{Mixie.getAlcohol()[1]} ml of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} ml of {mixerArray[Mixie.getMixer()[0]]}. Sounds delicious, coming right up! :3")
+        print(f"{Mixie.getAlcohol()[1]} cl of {alcoholArray[Mixie.getAlcohol()[0]]} combined with {Mixie.getMixer()[1]} cl of {mixerArray[Mixie.getMixer()[0]]}. Sounds delicious, coming right up! :3")
 
 #Make drink
 t.sleep(5)
