@@ -68,8 +68,8 @@ class AlcoholWheel(Mixie):
     def __closeValve__(self):
         print("Valve is closed")
 
-    def __readFlowSensor__(self,amount):
-        t.sleep(amount)
+    def __readFlowSensor__(self,amountAlcohol):
+        t.sleep(amountAlcohol)
 
     def turnWheel(self):
         print("The wheel is turning...")
@@ -79,7 +79,7 @@ class AlcoholWheel(Mixie):
         else:
             self.currentAlcohol = 0
 
-    def dispense(self, alcohol, amount):
+    def dispense(self, alcohol, amountAlcohol):
         while self.currentAlcohol != alcohol:
             print(f"Current alcohol: {alcoholArray[self.currentAlcohol]}")
             t.sleep(1)
@@ -88,7 +88,7 @@ class AlcoholWheel(Mixie):
         print(f"Current alcohol: {alcoholArray[self.currentAlcohol]}")
         t.sleep(1)
         self.__openValve__()
-        self.__readFlowSensor__(amount)
+        self.__readFlowSensor__(amountAlcohol)
         self.__closeValve__()
         t.sleep(1)
 
@@ -103,8 +103,8 @@ class MixerWheel(Mixie):
     def __closeValve__(self):
         print("Valve is closed")
 
-    def __readFlowSensor__(self,amount):
-        t.sleep(amount)
+    def __readFlowSensor__(self,amountMixer):
+        t.sleep(amountMixer)
 
     def turnWheel(self):
         print("Wheel is turning...")
@@ -114,7 +114,7 @@ class MixerWheel(Mixie):
         else:
             self.currentMixer = 0
 
-    def dispense(self, mixer, amount):
+    def dispense(self, mixer, amountMixer):
         while self.currentMixer != mixer:
             print(f"Current mixer: {mixerArray[self.currentMixer]}")
             t.sleep(1)
@@ -123,7 +123,7 @@ class MixerWheel(Mixie):
         print(f"Current mixer: {mixerArray[self.currentMixer]}")
         t.sleep(1)
         self.__openValve__()
-        self.__readFlowSensor__(amount)
+        self.__readFlowSensor__(amountMixer)
         self.__closeValve__()
         t.sleep(1)
 
