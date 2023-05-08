@@ -52,14 +52,10 @@ class Mixie():
         return self.iceParameter
 
     def getAlcohol(self):
-        alcohol = self.alcoholParameter
-        amount = self.alcoholVolume
-        return [alcohol, amount]
+        return [self.alcoholParameter, self.alcoholVolume]
 
     def getMixer(self):
-        mixer = self.mixerParameter
-        amount = self.mixerVolume
-        return [mixer, amount]
+        return [self.mixerParameter, self.mixerVolume]
 
 
 class AlcoholWheel(Mixie):
